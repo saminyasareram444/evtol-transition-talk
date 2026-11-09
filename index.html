@@ -13,6 +13,7 @@
   html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; }
   main { min-height: 100%; display: grid; place-items: center; padding: 24px 16px; }
   form { width: 100%; max-width: 380px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 28px; }
+  form[hidden] { display: none; }
   h1 { font-size: 20px; font-weight: 600; margin: 0 0 6px; }
   p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 20px; }
   label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
@@ -23,19 +24,19 @@
            border: 0; border-radius: 8px; padding: 11px; cursor: pointer; }
   button:disabled { opacity: .6; cursor: progress; }
   #msg { min-height: 20px; margin-top: 12px; font-size: 13px; color: var(--bad); }
-  #lock { display: block; margin-top: 14px; background: none; color: var(--muted); font-weight: 400; font-size: 12px; padding: 0; }
+  .note { margin: 14px 0 0; font-size: 12px; }
 </style>
 </head>
 <body>
 <main>
-  <form id="f" autocomplete="off">
+  <form id="f" autocomplete="off" hidden>
     <h1>Protected presentation</h1>
     <p>Enter the password to open the slides.</p>
     <label for="pw">Password</label>
-    <input id="pw" type="password" required autofocus>
+    <input id="pw" type="password" required>
     <button id="go" type="submit">Open slides</button>
     <div id="msg" role="alert"></div>
-    <button id="lock" type="button">Forget the password on this device</button>
+    <p class="note">The slides stay open in this tab until you close it.</p>
   </form>
 </main>
 <script>
@@ -43,16 +44,9 @@
   const $ = (id) => document.getElementById(id);
   const msg = (t) => { $("msg").textContent = t; };
   const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
-  const ok = window.isSecureContext && "serviceWorker" in navigator && window.crypto && crypto.subtle && window.indexedDB;
-  if (!ok) {
-    msg("This browser cannot open the protected slides here. Please use a normal (not private) window of Chrome, Edge, Firefox or Safari.");
-    $("go").disabled = true;
-  }
-  async function worker() {
-    await navigator.serviceWorker.register("sw.js");
-    const reg = await navigator.serviceWorker.ready;
-    return reg.active;
-  }
+  const tob64 = (buf) => btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
+  const ok = window.isSecureContext && "serviceWorker" in navigator && window.crypto && crypto.subtle && window.sessionStorage;
+  const show = () => { $("f").hidden = false; $("pw").focus(); };
   function send(w, data) {
     return new Promise((resolve) => {
       const ch = new MessageChannel();
@@ -60,33 +54,56 @@
       w.postMessage(data, [ch.port2]);
     });
   }
+  async function open(raw, salt) {                       // hand the key and a one-time ticket to the worker, then open
+    await navigator.serviceWorker.register("sw.js");
+    const reg = await navigator.serviceWorker.ready;
+    await send(reg.active, { type: "key", raw: raw, salt: salt });
+    location.replace("deck.html" + location.hash);
+  }
+  async function check(key, meta) {
+    const chk = b64(meta.check);
+    await crypto.subtle.decrypt({ name: "AES-GCM", iv: chk.slice(0, 12) }, key, chk.slice(12));
+  }
+  async function meta() { return (await fetch("lock.json", { cache: "no-cache" })).json(); }
+
+  if (!ok) {
+    show();
+    msg("This browser cannot open the protected slides here. Please use a normal (not private) window of Chrome, Edge, Firefox or Safari.");
+    $("go").disabled = true;
+    return;
+  }
+  (async () => {                                         // this tab is already unlocked (e.g. a reload): continue
+    const saved = sessionStorage.getItem("deck-key");
+    if (!saved) return show();
+    try {
+      const [raw, salt] = saved.split("|"), m = await meta();
+      if (salt !== m.salt) throw new Error("site rebuilt");
+      const key = await crypto.subtle.importKey("raw", b64(raw), "AES-GCM", true, ["decrypt"]);
+      await check(key, m);
+      await open(b64(raw).buffer, salt);
+    } catch (e) {
+      sessionStorage.removeItem("deck-key");
+      show();
+    }
+  })();
+
   $("f").addEventListener("submit", async (ev) => {
     ev.preventDefault();
-    if (!ok) return;
     $("go").disabled = true; msg("");
     try {
-      const meta = await (await fetch("lock.json", { cache: "no-cache" })).json();
+      const m = await meta();
       const base = await crypto.subtle.importKey("raw", new TextEncoder().encode($("pw").value), "PBKDF2", false, ["deriveKey"]);
-      const key = await crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt: b64(meta.salt), iterations: meta.iterations },
+      const key = await crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt: b64(m.salt), iterations: m.iterations },
                                                 base, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
-      const chk = b64(meta.check);
-      try {
-        await crypto.subtle.decrypt({ name: "AES-GCM", iv: chk.slice(0, 12) }, key, chk.slice(12));
-      } catch (e) {
+      try { await check(key, m); } catch (e) {
         msg("Wrong password."); $("go").disabled = false; $("pw").select(); return;
       }
       const raw = await crypto.subtle.exportKey("raw", key);
-      await send(await worker(), { type: "key", raw: raw, salt: meta.salt });
-      location.href = "deck.html" + location.hash;
+      sessionStorage.setItem("deck-key", tob64(raw) + "|" + m.salt);
+      await open(raw, m.salt);
     } catch (e) {
       msg("Could not open the slides: " + e.message); $("go").disabled = false;
     }
-  });
-  $("lock").addEventListener("click", async () => {
-    if (!ok) return;
-    const reg = await navigator.serviceWorker.getRegistration();
-    if (reg && reg.active) await send(reg.active, { type: "lock" });
-    msg("The password is forgotten on this device.");
   });
 })();
 </script>
