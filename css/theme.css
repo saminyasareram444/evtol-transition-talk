@@ -1,0 +1,171 @@
+/* Theme of the HTML presentation. The slide is a fixed 1920 x 1080 canvas (reveal.js scales it to the screen); every
+   element is placed in canvas pixels. Colours carry one meaning each throughout the deck:
+   teal = proposed filter / safe, violet = B2 (acceleration margin), slate = B0 and B1, amber = gust, coral = violation,
+   blue = corridor, ice = aircraft and inertial velocity. */
+
+@font-face { font-family: "Inter"; font-weight: 400; font-display: block; src: url(../vendor/fonts/inter-latin-400-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2199, U+2212, U+2215, U+2264-2265; }
+@font-face { font-family: "Inter"; font-weight: 500; font-display: block; src: url(../vendor/fonts/inter-latin-500-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2199, U+2212, U+2215, U+2264-2265; }
+@font-face { font-family: "Inter"; font-weight: 600; font-display: block; src: url(../vendor/fonts/inter-latin-600-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2199, U+2212, U+2215, U+2264-2265; }
+@font-face { font-family: "Inter"; font-weight: 700; font-display: block; src: url(../vendor/fonts/inter-latin-700-normal.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2190-2199, U+2212, U+2215, U+2264-2265; }
+@font-face { font-family: "Inter"; font-weight: 400; font-display: block; src: url(../vendor/fonts/inter-greek-400-normal.woff2) format("woff2"); unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+@font-face { font-family: "Inter"; font-weight: 500; font-display: block; src: url(../vendor/fonts/inter-greek-500-normal.woff2) format("woff2"); unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+@font-face { font-family: "Inter"; font-weight: 600; font-display: block; src: url(../vendor/fonts/inter-greek-600-normal.woff2) format("woff2"); unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+@font-face { font-family: "Inter"; font-weight: 700; font-display: block; src: url(../vendor/fonts/inter-greek-700-normal.woff2) format("woff2"); unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF; }
+@font-face { font-family: "Space Grotesk"; font-weight: 500; font-display: block; src: url(../vendor/fonts/space-grotesk-latin-500-normal.woff2) format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 600; font-display: block; src: url(../vendor/fonts/space-grotesk-latin-600-normal.woff2) format("woff2"); }
+@font-face { font-family: "Space Grotesk"; font-weight: 700; font-display: block; src: url(../vendor/fonts/space-grotesk-latin-700-normal.woff2) format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 400; font-display: block; src: url(../vendor/fonts/jetbrains-mono-latin-400-normal.woff2) format("woff2"); }
+@font-face { font-family: "JetBrains Mono"; font-weight: 600; font-display: block; src: url(../vendor/fonts/jetbrains-mono-latin-600-normal.woff2) format("woff2"); }
+
+:root {
+  --bg: #0B1226; --bg2: #0E1730; --panel: #121C38; --panel2: #17234A; --line: #22304F; --line2: #33456E;
+  --ink: #E8EEF9; --ink2: #A9B6CF; --muted: #7484A3;
+  --teal: #2DD4BF; --teal-d: #0F766E; --violet: #A78BFA; --slate: #94A3B8; --slate2: #64748B; --amber: #FBBF24; --coral: #F87171;
+  --blue: #60A5FA; --ice: #F1F5F9;
+  --head: "Space Grotesk", "Inter", "Segoe UI", sans-serif;
+  --body: "Inter", "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+}
+
+html, body { background: var(--bg); margin: 0; }
+.reveal-viewport, .reveal .backgrounds, .reveal .slide-background { background: var(--bg) !important; }
+:root { --r-background-color: #0B1226; --r-main-color: #E8EEF9; --r-heading-color: #E8EEF9; --r-link-color: #2DD4BF; }
+.reveal { font-family: var(--body); font-size: 30px; font-weight: 400; color: var(--ink); line-height: 1.38; }
+.reveal .slides { text-align: left; }
+.reveal .slides > section, .reveal .slides > section > section { width: 1920px; height: 1080px; padding: 0; box-sizing: border-box; }
+.reveal .slides section .fragment { transition-duration: 0.45s; }
+.reveal ::selection { background: var(--teal); color: var(--bg); }
+.reveal .progress { display: none; }
+.reveal .controls { color: var(--line2); bottom: 18px; right: 18px; }
+.reveal .katex { font-size: 1.04em; }
+.reveal strong, .reveal b { font-weight: 600; color: var(--ice); }
+.reveal em { color: var(--ink); font-style: italic; }
+.reveal p { margin: 0 0 14px; }
+.reveal ul, .reveal ol { margin: 0; padding-left: 1.05em; display: block; }
+.reveal li { margin: 0 0 12px; }
+.reveal li::marker { color: var(--muted); }
+
+/* ---- slide chrome ------------------------------------------------------------------------------------------------ */
+.kicker { position: absolute; left: 110px; top: 58px; font: 600 21px/1 var(--head); letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); }
+.kicker .n { color: var(--muted); margin-right: 14px; }
+.reveal h2.title { position: absolute; left: 110px; top: 92px; width: 1580px; margin: 0; font: 600 50px/1.12 var(--head); letter-spacing: -0.01em;
+  color: var(--ink); text-transform: none; text-shadow: none; }
+.src { position: absolute; left: 110px; bottom: 34px; width: 1450px; font-size: 17px; line-height: 1.3; color: var(--muted); }
+section:has(> .nextq) > .src { width: 980px; }
+.chrome-top { position: absolute; right: 110px; top: 54px; display: flex; align-items: center; gap: 30px; }
+.chrome-num { font: 500 18px var(--mono); color: var(--muted); }
+
+/* story thread: what the previous slide showed (in the kicker row) and the question the next slide answers (bottom right) */
+.kicker .from { margin-left: 30px; font: 400 19px/1 var(--body); letter-spacing: 0; text-transform: none; color: var(--ink2); }
+.kicker .from i { font-style: normal; color: var(--muted); }
+.kicker .from .katex { font-size: 1em; }
+.nextq { position: absolute; right: 110px; bottom: 26px; max-width: 690px; box-sizing: border-box; padding: 9px 20px; border-radius: 12px;
+  background: linear-gradient(90deg, rgba(45, 212, 191, 0.04), rgba(45, 212, 191, 0.16)); border: 1px solid rgba(45, 212, 191, 0.55);
+  font: 500 22px/1.3 var(--body); color: var(--ink); opacity: 0; transform: translateY(10px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.nextq.on { opacity: 1; transform: none; }
+.nextq b { font: 600 16px var(--head); letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-right: 14px; }
+.nextq b::after { content: "→"; margin-left: 10px; letter-spacing: 0; }
+.chrome-flight { position: absolute; left: 110px; right: 110px; bottom: 14px; height: 2px; background: var(--line); }
+.chrome-flight .fill { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, var(--teal-d), var(--teal)); width: 0; transition: width 0.6s ease; }
+.chrome-flight img { position: absolute; top: -13px; width: 34px; margin-left: -17px; transform: rotate(90deg); transition: left 0.6s ease; filter: drop-shadow(0 0 6px rgba(45, 212, 191, 0.5)); }
+.stepdots { display: flex; gap: 9px; align-items: center; }
+.stepdots i { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--line2); box-sizing: border-box; transition: all 0.3s; }
+.stepdots i.on { background: var(--teal); border-color: var(--teal); }
+.stepdots span { font: 500 16px var(--mono); color: var(--muted); margin-right: 6px; }
+.partnav { position: absolute; right: 110px; top: 92px; display: flex; gap: 22px; font: 500 15px var(--head); letter-spacing: 0.12em; text-transform: uppercase; color: var(--line2); }
+.partnav b { color: var(--teal); font-weight: 600; }
+
+/* ---- layout helpers ---------------------------------------------------------------------------------------------- */
+.abs { position: absolute; }
+.rcol { position: absolute; left: 1290px; top: 240px; width: 520px; }
+.lead { font-size: 34px; line-height: 1.35; color: var(--ink); }
+.small { font-size: 24px; color: var(--ink2); }
+.tiny { font-size: 20px; color: var(--muted); }
+.mono { font-family: var(--mono); }
+.c-teal { color: var(--teal); } .c-violet { color: var(--violet); } .c-amber { color: var(--amber); } .c-coral { color: var(--coral); }
+.c-blue { color: var(--blue); } .c-slate { color: var(--slate); } .c-ink2 { color: var(--ink2); } .c-muted { color: var(--muted); }
+.sw { display: inline-block; width: 26px; height: 6px; border-radius: 3px; vertical-align: middle; margin-right: 10px; position: relative; top: -2px; }
+.sw.dot { width: 14px; height: 14px; border-radius: 50%; top: -1px; }
+
+.card { position: absolute; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px 30px; box-sizing: border-box; }
+.card h3 { margin: 0 0 12px; font: 600 30px/1.2 var(--head); color: var(--ice); text-transform: none; letter-spacing: 0; }
+.card p, .card li { font-size: 25px; color: var(--ink2); line-height: 1.38; }
+.card li { margin-bottom: 8px; }
+.card .tag { display: inline-block; font: 600 17px var(--head); letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 11px; border-radius: 8px;
+  background: var(--panel2); color: var(--teal); margin-bottom: 12px; }
+.card.teal { border-color: rgba(45, 212, 191, 0.55); background: linear-gradient(160deg, rgba(45, 212, 191, 0.12), var(--panel) 60%); }
+.card.violet { border-color: rgba(167, 139, 250, 0.55); background: linear-gradient(160deg, rgba(167, 139, 250, 0.12), var(--panel) 60%); }
+.card.amber { border-color: rgba(251, 191, 36, 0.5); background: linear-gradient(160deg, rgba(251, 191, 36, 0.10), var(--panel) 60%); }
+.card.coral { border-color: rgba(248, 113, 113, 0.55); background: linear-gradient(160deg, rgba(248, 113, 113, 0.11), var(--panel) 60%); }
+.badge { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; font: 700 22px var(--head);
+  background: var(--panel2); color: var(--teal); border: 2px solid var(--teal); margin-right: 14px; flex: none; }
+
+/* numbered step list beside an animation: the current step is bright, earlier steps fade back */
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: st; }
+.steps > li { position: relative; padding-left: 62px; margin-bottom: 26px; font-size: 27px; line-height: 1.36; color: var(--ink2); counter-increment: st; }
+.steps > li::before { content: counter(st); position: absolute; left: 0; top: -2px; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--line2);
+  color: var(--muted); font: 600 20px/36px var(--head); text-align: center; box-sizing: border-box; }
+.steps > li b { color: var(--ice); }
+.steps > li.current-fragment, .steps > li.now { color: var(--ink); }
+.steps > li.current-fragment::before, .steps > li.now::before { border-color: var(--teal); background: var(--teal); color: var(--bg); }
+.steps > li.visible:not(.current-fragment):not(.now) { opacity: 0.62; }
+.reveal .slides section .fragment.step-on { opacity: 1; visibility: inherit; }
+
+/* invisible fragments that only drive an animation step */
+.reveal .slides section .fragment.tick { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.chip { display: inline-block; padding: 6px 14px; border-radius: 10px; background: var(--panel2); border: 1px solid var(--line2); font: 500 22px var(--mono); color: var(--ink); margin: 0 8px 10px 0; }
+.chip.teal { border-color: var(--teal); } .chip.amber { border-color: var(--amber); } .chip.violet { border-color: var(--violet); }
+.kv { font: 600 64px/1 var(--head); color: var(--ice); }
+.kv small { font: 500 24px var(--body); color: var(--ink2); display: block; margin-top: 10px; }
+.eq { font-size: 34px; color: var(--ink); }
+.eqbox { position: absolute; background: var(--bg2); border: 1px solid var(--line2); border-radius: 14px; padding: 18px 26px; box-sizing: border-box; }
+.hl { border-radius: 8px; padding: 0 6px; transition: background 0.4s, box-shadow 0.4s; }
+.hl.on, .fragment.visible .hl { background: rgba(251, 191, 36, 0.16); box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.6); }
+
+/* tables */
+.tbl { position: absolute; border-collapse: separate; border-spacing: 0; font-size: 25px; }
+.tbl th { font: 600 18px var(--head); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 10px 18px; border-bottom: 1px solid var(--line2); }
+.tbl td { padding: 14px 18px; border-bottom: 1px solid var(--line); color: var(--ink2); vertical-align: top; }
+.tbl td:first-child { color: var(--ink); }
+.tbl td.num { font-family: var(--mono); color: var(--ice); text-align: right; white-space: nowrap; }
+.tbl tr.fragment.visible td { animation: rowin 0.5s ease; }
+@keyframes rowin { from { background: rgba(45, 212, 191, 0.14); } to { background: transparent; } }
+
+/* Manim clips fill the slide behind the HTML; the poster image is the last frame of a clip */
+.manim { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; z-index: 0; pointer-events: none; }
+.manim video, .manim img { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; opacity: 0; }
+.manim .show { opacity: 1; }
+section > *:not(.manim) { z-index: 1; }
+
+/* SVG charts */
+svg text { font-family: var(--body); }
+.axis line, .axis path { stroke: var(--line2); }
+.axis text { fill: var(--ink2); font-size: 20px; }
+.grid line { stroke: var(--line); stroke-width: 1; }
+.lbl { fill: var(--ink); font-size: 21px; }
+.lbl2 { fill: var(--ink2); font-size: 19px; }
+
+/* title slide */
+.hero { position: absolute; inset: 0; overflow: hidden; }
+.hero img { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; transform-origin: 70% 45%; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11, 18, 38, 0.96) 0%, rgba(11, 18, 38, 0.85) 34%, rgba(11, 18, 38, 0.15) 66%, rgba(11, 18, 38, 0.05) 100%),
+  linear-gradient(0deg, rgba(11, 18, 38, 0.9) 0%, rgba(11, 18, 38, 0) 30%); }
+.credit { position: absolute; right: 150px; bottom: 66px; font-size: 15px; color: rgba(232, 238, 249, 0.75); text-align: right; }
+
+/* carried elements (D-099): copies that fly between neighbouring slides, above the slide content */
+.reveal .slides section > .carry-layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; z-index: 40; overflow: visible; }
+.carry-ghost { pointer-events: none; will-change: transform, opacity; }
+
+/* still frames (?motion=reduced or key M): steps appear at once; a short notice when switching */
+.motion-toast { position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%); padding: 10px 18px; border-radius: 10px; z-index: 100;
+  background: rgba(11, 18, 38, 0.92); border: 1px solid #33456E; color: #E8EEF9; font: 500 16px Inter, "Segoe UI", sans-serif;
+  opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+.motion-toast.on { opacity: 1; }
+html.reduced-motion .reveal .slides section .fragment, html.reduced-motion .nextq, html.reduced-motion .chrome-flight .fill,
+html.reduced-motion .chrome-flight img, html.reduced-motion .tbl tr.fragment.visible td { transition: none !important; animation: none !important; }
+
+/* print / PDF: show every fragment, no chrome animation */
+html.print-pdf .reveal .slides section .fragment { opacity: 1 !important; visibility: visible !important; transform: none !important; }
+html.print-pdf .stepdots { display: none; }
+html.print-pdf .nextq { opacity: 1; transform: none; }

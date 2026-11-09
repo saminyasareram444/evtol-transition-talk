@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Protected presentation</title>
+<style>
+  @font-face { font-family: "Inter"; font-weight: 400; src: url(vendor/fonts/inter-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Inter"; font-weight: 600; src: url(vendor/fonts/inter-latin-600-normal.woff2) format("woff2"); }
+  :root { --bg: #0b1020; --card: #121a33; --line: #26304f; --ink: #e7ecf7; --muted: #9aa6c4; --accent: #2ed3b7; --bad: #ff8a8a; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+  main { min-height: 100%; display: grid; place-items: center; padding: 24px 16px; }
+  form { width: 100%; max-width: 380px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 28px; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 6px; }
+  p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 20px; }
+  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  input { width: 100%; font: inherit; font-size: 16px; color: var(--ink); background: var(--bg); border: 1px solid var(--line);
+          border-radius: 8px; padding: 10px 12px; }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button { margin-top: 16px; width: 100%; font: inherit; font-weight: 600; font-size: 15px; color: #06231e; background: var(--accent);
+           border: 0; border-radius: 8px; padding: 11px; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: progress; }
+  #msg { min-height: 20px; margin-top: 12px; font-size: 13px; color: var(--bad); }
+  #lock { display: block; margin-top: 14px; background: none; color: var(--muted); font-weight: 400; font-size: 12px; padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <form id="f" autocomplete="off">
+    <h1>Protected presentation</h1>
+    <p>Enter the password to open the slides.</p>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" required autofocus>
+    <button id="go" type="submit">Open slides</button>
+    <div id="msg" role="alert"></div>
+    <button id="lock" type="button">Forget the password on this device</button>
+  </form>
+</main>
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const msg = (t) => { $("msg").textContent = t; };
+  const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const ok = window.isSecureContext && "serviceWorker" in navigator && window.crypto && crypto.subtle && window.indexedDB;
+  if (!ok) {
+    msg("This browser cannot open the protected slides here. Please use a normal (not private) window of Chrome, Edge, Firefox or Safari.");
+    $("go").disabled = true;
+  }
+  async function worker() {
+    await navigator.serviceWorker.register("sw.js");
+    const reg = await navigator.serviceWorker.ready;
+    return reg.active;
+  }
+  function send(w, data) {
+    return new Promise((resolve) => {
+      const ch = new MessageChannel();
+      ch.port1.onmessage = (e) => resolve(e.data);
+      w.postMessage(data, [ch.port2]);
+    });
+  }
+  $("f").addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    if (!ok) return;
+    $("go").disabled = true; msg("");
+    try {
+      const meta = await (await fetch("lock.json", { cache: "no-cache" })).json();
+      const base = await crypto.subtle.importKey("raw", new TextEncoder().encode($("pw").value), "PBKDF2", false, ["deriveKey"]);
+      const key = await crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt: b64(meta.salt), iterations: meta.iterations },
+                                                base, { name: "AES-GCM", length: 256 }, true, ["decrypt"]);
+      const chk = b64(meta.check);
+      try {
+        await crypto.subtle.decrypt({ name: "AES-GCM", iv: chk.slice(0, 12) }, key, chk.slice(12));
+      } catch (e) {
+        msg("Wrong password."); $("go").disabled = false; $("pw").select(); return;
+      }
+      const raw = await crypto.subtle.exportKey("raw", key);
+      await send(await worker(), { type: "key", raw: raw, salt: meta.salt });
+      location.href = "deck.html" + location.hash;
+    } catch (e) {
+      msg("Could not open the slides: " + e.message); $("go").disabled = false;
+    }
+  });
+  $("lock").addEventListener("click", async () => {
+    if (!ok) return;
+    const reg = await navigator.serviceWorker.getRegistration();
+    if (reg && reg.active) await send(reg.active, { type: "lock" });
+    msg("The password is forgotten on this device.");
+  });
+})();
+</script>
+</body>
+</html>

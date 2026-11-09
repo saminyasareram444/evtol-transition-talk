@@ -1,0 +1,182 @@
+/* Slide-specific layout (canvas pixels, 1920 x 1080). */
+
+/* title and takeaway */
+.t-kick { font: 600 20px/1.3 var(--head); letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); margin-bottom: 26px; }
+.reveal h1.t-title { margin: 0 0 30px; font: 700 66px/1.06 var(--head); letter-spacing: -0.015em; color: var(--ice); text-transform: none; text-shadow: 0 2px 30px rgba(0, 0, 0, 0.35); }
+.t-title span { display: block; }
+.t-title span:first-child { color: var(--teal); }
+.t-sub { font-size: 29px; line-height: 1.42; color: var(--ink2); width: 900px; }
+.t-author { margin-top: 44px !important; font: 600 30px var(--head); color: var(--ice); }
+.t-author span { display: block; font: 400 23px var(--body); color: var(--ink2); margin-top: 8px; }
+.quote { font: 700 76px/1.05 var(--head); color: var(--ice); margin: 0 0 30px !important; letter-spacing: -0.02em; }
+
+/* one caption line under a full-width animation; only the current one is shown */
+.capline { position: absolute; left: 110px; top: 905px; width: 1700px; height: 90px; }
+.capline p { position: absolute; left: 0; top: 0; width: 1700px; font-size: 29px; line-height: 1.35; color: var(--ink); margin: 0; }
+.reveal .capline .fragment.visible:not(.current-fragment) { opacity: 0; }
+.reveal .capline .fragment.fade-out { opacity: 1; visibility: inherit; }
+.reveal .capline .fragment.fade-out.visible { opacity: 0; }
+
+/* step list: the first, always-shown item dims once later items appear */
+.steps:has(> li.visible) > li.now { color: var(--ink2); opacity: 0.62; }
+.steps:has(> li.visible) > li.now::before { background: transparent; border-color: var(--line2); color: var(--muted); }
+.steps > li.fragment.visible.current-fragment::before { background: var(--teal); border-color: var(--teal); color: var(--bg); }
+
+/* approaches */
+.grid6 { position: absolute; left: 110px; top: 235px; width: 1700px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+.grid6 .card { position: relative; min-height: 270px; }
+.grid6 .card p { margin: 0 0 8px; font-size: 25px; }
+.grid6 .card .gap { color: var(--amber); }
+.grid6 .card .gap::before { content: "open: "; font-weight: 600; }
+.banner { position: absolute; left: 110px; top: 862px; width: 1700px; padding: 22px 30px; box-sizing: border-box; border-radius: 16px; font-size: 29px;
+  background: linear-gradient(90deg, rgba(45, 212, 191, 0.20), rgba(45, 212, 191, 0.04)); border: 1px solid rgba(45, 212, 191, 0.6); color: var(--ink); }
+.banner b { color: var(--teal); }
+
+/* problem statement */
+.pline { border-radius: 10px; padding: 2px 10px; margin: 2px 0; transition: background 0.35s, box-shadow 0.35s; }
+.pline .katex-display { margin: 0.35em 0; text-align: left; }
+.pline.hl-on { background: rgba(251, 191, 36, 0.14); box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.65); }
+.reqs { position: absolute; left: 1150px; top: 245px; width: 660px; }
+.req { display: flex; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 24px; margin-bottom: 20px; font-size: 26px; line-height: 1.32; }
+.req .small { font-size: 21px; }
+.req.current-fragment { border-color: var(--amber); }
+
+/* research questions */
+.rqs { position: absolute; left: 110px; top: 245px; width: 1090px; }
+.rq { display: flex; gap: 22px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 26px; margin-bottom: 20px; }
+.rq p { margin: 0; font-size: 26px; line-height: 1.36; color: var(--ink2); }
+.rqn { flex: none; font: 700 24px var(--head); color: var(--bg); background: var(--teal); border-radius: 10px; padding: 8px 12px; }
+
+/* set-D rows */
+.rows { position: absolute; left: 600px; top: 245px; width: 1210px; }
+.rowq { display: flex; align-items: baseline; gap: 26px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 33px; }
+.rowq span { font-size: 22px; color: var(--ink2); }
+.pill { display: inline-block; font-size: 20px; padding: 3px 10px; border-radius: 8px; border: 1px solid var(--line2); margin: 6px 6px 0 0; color: var(--ink); background: var(--panel2); }
+
+/* QP step */
+.qpflow { position: absolute; left: 110px; top: 240px; width: 1700px; }
+.qp { display: flex; gap: 22px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px 26px 6px; margin-bottom: 18px; font-size: 27px; }
+.qp .katex-display { margin: 0.3em 0 0.4em; text-align: left; font-size: 1.15em; }
+.qp .katex-display > .katex { text-align: left; }
+
+/* theory */
+.thms { position: absolute; left: 110px; top: 245px; width: 860px; }
+.thm { display: flex; gap: 20px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px 24px; margin-bottom: 18px; font-size: 25px; line-height: 1.36; color: var(--ink2); }
+.thm .badge { width: 54px; height: 54px; font-size: 20px; }
+
+/* conclusion */
+.answers { position: absolute; left: 110px; top: 250px; width: 1700px; }
+.ans { display: flex; gap: 26px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 24px 30px; margin-bottom: 22px; font-size: 29px; line-height: 1.36; color: var(--ink2); }
+.contribs { position: absolute; left: 110px; top: 245px; width: 1700px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.contrib { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 26px 28px 22px 92px; min-height: 250px; }
+.contrib h3 { margin: 0 0 10px; font: 600 28px/1.2 var(--head); color: var(--ice); text-transform: none; }
+.contrib p { margin: 0; font-size: 24px; color: var(--ink2); line-height: 1.38; }
+.cn { position: absolute; left: 24px; top: 24px; width: 48px; height: 48px; border-radius: 50%; background: var(--teal); color: var(--bg); font: 700 24px/48px var(--head); text-align: center; }
+.next { position: absolute; left: 110px; top: 700px; width: 1700px; }
+
+/* backup flow */
+.flow { position: absolute; left: 110px; top: 260px; width: 1700px; display: flex; align-items: stretch; gap: 10px; }
+.fbox { flex: 1; background: var(--panel); border: 1px solid var(--line2); border-radius: 14px; padding: 18px 16px; font-size: 22px; color: var(--ink2); }
+.fbox b { display: block; color: var(--ice); font: 600 24px var(--head); margin-bottom: 8px; }
+.fbox span { display: block; line-height: 1.3; }
+.fbox.hi { border-color: var(--teal); }
+.farr { align-self: center; color: var(--muted); font-size: 30px; }
+
+/* animated scenes */
+#ph-scene { border-radius: 22px; overflow: hidden; background: linear-gradient(180deg, #13244A 0%, #0F1C3A 70%, #0C1630 100%); border: 1px solid var(--line); }
+#ex-stage { border-radius: 18px; overflow: hidden; background: linear-gradient(180deg, #13244A 0%, #0E1934 100%); border: 1px solid var(--line); }
+.hud { position: absolute; font: 500 22px var(--mono); color: var(--ink); background: rgba(11, 18, 38, 0.72); border: 1px solid var(--line2); border-radius: 12px; padding: 12px 16px; line-height: 1.5; }
+.hud b { color: var(--ice); font-weight: 600; }
+.hud .k { color: var(--muted); }
+.arch-panel { position: absolute; border-radius: 20px; border: 1px solid var(--line); background: var(--bg2); }
+.arch-panel .ph { position: absolute; left: 22px; top: 16px; font: 600 18px var(--head); letter-spacing: 0.14em; text-transform: uppercase; }
+.abox { position: absolute; background: var(--panel); border: 1px solid var(--line2); border-radius: 14px; padding: 12px 16px; box-sizing: border-box; font-size: 22px; line-height: 1.3; color: var(--ink2); }
+.abox b { color: var(--ice); display: block; font: 600 23px var(--head); margin-bottom: 2px; }
+.abox .no { position: absolute; right: -14px; top: -14px; width: 34px; height: 34px; border-radius: 50%; background: var(--teal); color: var(--bg); font: 700 18px/34px var(--head); text-align: center; }
+.abox.qpbox { background: linear-gradient(160deg, rgba(45, 212, 191, 0.22), var(--panel)); border-color: var(--teal); }
+
+/* notation slides: symbol rows */
+.vtab { position: absolute; left: 1225px; top: 222px; width: 600px; }
+.vgrp { margin-bottom: 10px; }
+.vh { font: 600 16px var(--head); letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin: 0 0 4px; }
+.vr { display: flex; gap: 14px; font-size: 20px; line-height: 1.28; color: var(--ink2); padding: 4px 0; border-bottom: 1px solid var(--line); }
+.vr .vs { flex: none; width: 140px; color: var(--ice); }
+.vgrp.current-fragment .vr { color: var(--ink); }
+.vsum { position: absolute; left: 110px; top: 935px; width: 1700px; font-size: 24px; color: var(--ink); text-align: center; }
+.symgrid { position: absolute; left: 110px; top: 228px; width: 1700px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.sym { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px 20px; }
+.sym .vr .vs { width: 196px; }
+.sym.current-fragment { border-color: var(--teal); }
+
+/* Dryden pipeline */
+.pipe { position: absolute; left: 110px; top: 228px; width: 1700px; display: flex; align-items: stretch; gap: 12px; }
+.pbox { background: var(--panel); border: 1px solid var(--line2); border-radius: 16px; padding: 12px 18px; width: 400px; box-sizing: border-box; }
+.pbox.wide { width: 780px; }
+.pt { display: flex; align-items: center; gap: 8px; font: 600 22px var(--head); color: var(--ice); margin-bottom: 4px; }
+.pt .badge { width: 32px; height: 32px; font-size: 16px; margin-right: 10px; }
+.pd { font-size: 19px; color: var(--ink2); }
+.pf { font-size: 24px; margin: 8px 0; }
+.pf .katex { font-size: 1.05em; }
+.parr { align-self: center; font-size: 32px; color: var(--muted); }
+.spark { display: block; margin: 4px 0; }
+.chips { position: absolute; left: 110px; top: 908px; width: 1700px; }
+.chips .chip { font-size: 19px; }
+.ctab { font-size: 21px; }
+.ctab th { font-size: 15px; padding: 8px 10px; }
+.ctab td { padding: 9px 10px; }
+#hj-fig { background: #fff; border-radius: 14px; padding: 10px; box-sizing: border-box; }
+
+/* baselines */
+.tiles { position: absolute; left: 110px; top: 226px; width: 1700px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; }
+.tile .th { display: flex; align-items: center; gap: 12px; font: 600 22px var(--head); color: var(--ice); }
+.bdg { display: inline-block; min-width: 44px; padding: 4px 8px; border-radius: 8px; font: 700 17px var(--head); color: #0B1226; text-align: center; }
+.tile svg { display: block; margin: 6px 0 4px; }
+.tile p { margin: 0; font-size: 19px; color: var(--ink2); line-height: 1.33; }
+.tile.current-fragment { border-color: var(--teal); }
+.btab { font-size: 20px; }
+.btab th { font-size: 16px; padding: 10px 12px; }
+.btab td { padding: 12px 12px; }
+.btab td.num { text-align: left; }
+.btab i.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+.vr .vm { flex: 1; min-width: 0; }
+.steps.tight > li { margin-bottom: 14px; font-size: 21px; line-height: 1.32; }
+
+/* D-096: step-by-step equations with examples, HTML boxes in animations, HJI legend, problem legend */
+.steps.eqs > li { font-size: 23px; margin-bottom: 17px; line-height: 1.34; }
+.steps.eqs > li .katex { font-size: 1.06em; }
+.eg { display: block; margin-top: 5px; font-size: 0.93em; color: var(--ink); }
+.egl { display: inline-block; font: 600 14px/1 var(--head); letter-spacing: 0.1em; text-transform: uppercase; color: var(--bg); background: var(--ice);
+  border-radius: 6px; padding: 5px 7px 4px; margin-right: 9px; position: relative; top: -2px; }
+.hbox { position: absolute; background: var(--panel); border: 1px solid var(--line2); border-radius: 14px; padding: 8px 14px; box-sizing: border-box;
+  font-size: 23px; line-height: 1.3; color: var(--ink); }
+.hbox b { display: block; font: 600 17px var(--head); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink2); margin-bottom: 2px; }
+.hbox.final { background: linear-gradient(160deg, rgba(45, 212, 191, 0.22), var(--panel)); border-color: var(--teal); }
+.hbox.hnote { background: none; border: none; padding: 0; font-size: 19px; color: var(--ink2); }
+.hbox.hnote b { display: inline; font: 600 19px var(--body); letter-spacing: 0; text-transform: none; color: var(--ice); }
+.hjleg { position: absolute; left: 110px; top: 418px; width: 950px; }
+.legrow { display: flex; gap: 18px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 10px 18px;
+  margin-bottom: 12px; font-size: 21px; line-height: 1.32; color: var(--ink2); }
+.legrow .lt { flex: none; width: 200px; color: var(--ink); font-size: 22px; }
+.legrow.current-fragment { border-color: var(--teal); color: var(--ink); }
+.legend2 { position: absolute; display: grid; grid-template-columns: 1fr 1fr; column-gap: 30px; }
+.legend2 .vr { font-size: 21px; }
+.legend2 .vr .vs { width: 92px; }
+.abox.rlbox { border-style: dashed; }
+
+/* D-099: continuous story. Gap map (slide 15): families, requirements, questions; RQ chips docked in the architecture;
+   answers that repeat their question; the amber gust-reserve box of the robust slide */
+.gm-col { position: absolute; }
+.gm-h { font: 600 17px var(--head); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+.gmf { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--coral); border-radius: 14px; padding: 11px 16px;
+  margin-bottom: 12px; font-size: 21px; line-height: 1.33; color: var(--ink2); }
+.gmf b { color: var(--ice); }
+.req.gmr { padding: 13px 18px; margin-bottom: 14px; font-size: 22px; line-height: 1.3; transition: border-color 0.3s; }
+.req.gmr .small { font-size: 18px; }
+.req.gmr .badge { width: 38px; height: 38px; font-size: 18px; }
+.gm-col .rq { padding: 13px 18px; margin-bottom: 14px; gap: 16px; }
+.gm-col .rq p { font-size: 21px; line-height: 1.33; }
+.gm-col .rq .rqn { font-size: 19px; padding: 6px 9px; }
+.rqtag { position: absolute; font: 700 17px/1 var(--head); color: var(--bg); background: var(--teal); border-radius: 8px; padding: 7px 9px; z-index: 3; }
+.ansq { font-size: 21px; color: var(--muted); margin-bottom: 6px; }
+.hbox.amberbox { border-color: var(--amber); background: linear-gradient(160deg, rgba(251, 191, 36, 0.18), var(--panel)); }
